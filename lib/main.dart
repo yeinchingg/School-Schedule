@@ -97,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // itemCount: 5,
 
-
         // children: [
         //   buildCard(),
         //   SizedBox(height: 5),
@@ -155,20 +154,41 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               children: [
                 const SizedBox(height: 100),
-                Text(
-                  item.title,
-                  style: GoogleFonts.aclonica(
-                    textStyle: Theme.of(context).textTheme.displayLarge,
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  item.subtitle,
-                  style: GoogleFonts.aclonica(
-                    textStyle: Theme.of(context).textTheme.displayLarge,
-                    fontSize: 15,
-                    color: Colors.black,
+                GestureDetector(
+                  onTap: () {
+                    // 导航到 DetailPage 并传递 imageUrl 参数
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(
+                          imageUrl: item.urlImage,
+                          pageType: item.pageType,
+                        ),
+                      ),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8), // 设置圆角
+                    child: Column(
+                      children: [
+                        Text(
+                          item.title,
+                          style: GoogleFonts.aclonica(
+                            textStyle: Theme.of(context).textTheme.displayLarge,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          item.subtitle,
+                          style: GoogleFonts.aclonica(
+                            textStyle: Theme.of(context).textTheme.displayLarge,
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
