@@ -130,7 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DetailPage(
-                      imageUrl: item.urlImage,
                       pageType: item.pageType,
                     ),
                   ),
@@ -156,12 +155,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 100),
                 GestureDetector(
                   onTap: () {
-                    // 导航到 DetailPage 并传递 imageUrl 参数
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => DetailPage(
-                          imageUrl: item.urlImage,
+
                           pageType: item.pageType,
                         ),
                       ),

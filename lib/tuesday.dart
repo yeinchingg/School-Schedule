@@ -1,74 +1,128 @@
-import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-class TuesdayPage extends StatelessWidget {
-  const TuesdayPage({Key? key}) : super(key: key);
+import 'package:school_schedule/main.dart';
 
+class TuesdayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // 範例數據
-    final List<String> items = List.generate(10, (index) => 'Item $index');
-
     return Scaffold(
-      appBar: AppBar(title: Text('Tuesday Schedule')),
-      backgroundColor: Colors.grey[800],
-      body: ListView.builder(
-        padding: EdgeInsets.all(16),
-        itemCount: 2,
-        itemBuilder: (context, index) {
-          List<Map<String,String>>cardData = [
-            {
-              'title': '體育課',
-              'subtitle1': 'K2 / 3、4節',
-              'subtitle2': '林如瀚',
-            },
-            {
-              'title': '視窗程式設計',
-              'subtitle1': 'F506 / 5，6節',
-              'subtitle2': '游象甫',
-            },
+      appBar: AppBar(
+        title: Text('Tuesday List'),
+      ),
+      body: Column(
+        children: <Widget>[
 
-          ];
-          final data = cardData[index];
-          return Card(
-            margin: EdgeInsets.only(bottom: 10),
-            color: Colors.black,
-            child:
-                ListTile(
-                  leading: Icon(Icons.access_time),
-                  title: Text(
-                    data['title']!,
-                    style: GoogleFonts.abel(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      textStyle: TextStyle(color: Colors.purple[200],),
-                    ),
-                  ),
-
-                  subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                  Text(data['subtitle1']!,style: GoogleFonts.abel(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                    textStyle: TextStyle(color: Colors.purple,),
-                  ),
-                  ),
-                        SizedBox(width: 15),
-                  Text(data['subtitle2']!,style: GoogleFonts.abel(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                    textStyle: TextStyle(color: Colors.purple,),
-                  ),),
-                  ],
-                  ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(title: 'School Schedule'),
                 ),
-
-
-          );
-        },
+              );
+            },
+            child: Text('Go back to HomePage'),
+          ),
+          Expanded(child: CardList()),
+        ],
       ),
     );
   }
+}
+
+
+class CardList extends StatefulWidget {
+  @override
+  CardListState createState() => CardListState();
+}
+
+class CardListState extends State<CardList> {
+  List<String> cards = []; // 用于存储每个卡片的数据
+
+  void addCard() {
+    setState(() {
+      cards.add('New card'); // 新增一张卡片
+    });
+  }
+  void deleteCard(int index){
+    setState(() {
+      cards.removeAt(index); // 新增一张卡片
+    });
+  }
+  void editCard(int index) {
+    final TextEditingController controller =
+    TextEditingController(text: cards[index]);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Card'),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(hintText: 'Enter new text'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  cards[index] = controller.text; // 更新卡片的文字
+                });
+                Navigator.of(context).pop(); // 關閉對話框
+              },
+              child: Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 關閉對話框
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        ElevatedButton(
+          onPressed: addCard,
+          child: Text('Add Card'),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: cards.length,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: EdgeInsets.all(8.0),
+                elevation: 4.0,
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(16.0),
+                  title: Text(cards[index]),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () => editCard(index), // 點擊編輯按鈕
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () => deleteCard(index), // 點擊刪除按鈕
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
 }

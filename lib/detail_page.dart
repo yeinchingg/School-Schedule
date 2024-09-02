@@ -6,12 +6,11 @@ import 'thursday.dart';
 import 'friday.dart';
 
 class DetailPage extends StatelessWidget {
-  final String imageUrl;
+
   final String pageType;
 
   const DetailPage({
     Key? key,
-    required this.imageUrl,
     required this.pageType,
   }) : super(key: key);
 
